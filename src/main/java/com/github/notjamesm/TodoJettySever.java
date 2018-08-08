@@ -1,27 +1,28 @@
 package com.github.notjamesm;
 
-import org.apache.log4j.Logger;
 import org.eclipse.jetty.server.NCSARequestLog;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.ContextHandler;
 
 public class TodoJettySever {
 
     private final Server server;
 
     public TodoJettySever(int portNumber) {
-            this.server = new Server(portNumber);
+        this.server = new Server(portNumber);
     }
 
     public void start() {
         try {
             setUpServerContexts();
             server.start();
+            server.join();
         } catch (Exception e) {
             throw new RuntimeException("Failed to start", e);
         }
     }
 
-    public void stop(){
+    public void stop() {
         try {
             server.stop();
         } catch (Exception e) {
@@ -30,7 +31,11 @@ public class TodoJettySever {
     }
 
     private void setUpServerContexts() {
-        //todo set up the endpoints
+        ContextHandler contextHandler = new ContextHandler();
+        contextHandler.setContextPath("/todo");
+        contextHandler.setHandler(new TodoHandler());
+        server.setHandler(contextHandler);
+
         NCSARequestLog requestLog = generateRequestLog();
 
         server.setRequestLog(requestLog);

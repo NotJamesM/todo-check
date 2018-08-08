@@ -13,4 +13,8 @@ public class TodoServer {
         LOGGER.info("Started server");
         Runtime.getRuntime().addShutdownHook(new Thread(server::stop));
     }
+
+    public static TodoServer startServer(){
+        return new TodoServer();
+    }
 }
