@@ -16,7 +16,6 @@ public class TodoJettySever {
         try {
             setUpServerContexts();
             server.start();
-            server.join();
         } catch (Exception e) {
             throw new RuntimeException("Failed to start", e);
         }

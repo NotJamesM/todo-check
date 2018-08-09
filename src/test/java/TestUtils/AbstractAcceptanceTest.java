@@ -1,65 +1,31 @@
 package TestUtils;
 
-import io.github.theangrydev.fluentbdd.core.*;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.junit.After;
+import org.junit.Before;
 
-public class AbstractAcceptanceTest implements WithFluentBdd<String> {
-    @Override
-    public FluentBdd<String> fluentBdd() {
+import java.io.IOException;
+
+public abstract class AbstractAcceptanceTest  {
+
+    private static final TestHttpClient HTTP_CLIENT = new TestHttpClient();
+
+    protected CloseableHttpResponse gitSendsAPushAlert() {
+        try (CloseableHttpResponse some_stuff = HTTP_CLIENT.doJsonPost("some stuff")) {
+            return some_stuff;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
-    @Override
-    public String theResult() {
-        return null;
+    @Before
+    public void setUp(){
+        TestTodoServer.start();
     }
 
-    @Override
-    public void given(Given given) {
-
-    }
-
-    @Override
-    public <T extends When<String>> void when(T when) {
-
-    }
-
-    @Override
-    public <Then> Then then(ThenAssertion<Then, String> thenAssertion) {
-        return null;
-    }
-
-    @Override
-    public void then(ThenVerification<String> thenVerification) {
-
-    }
-
-    @Override
-    public void and(Given given) {
-
-    }
-
-    @Override
-    public void whenCalling(WhenWithoutResult whenWithoutResult) {
-
-    }
-
-    @Override
-    public void given(When<String> when) {
-
-    }
-
-    @Override
-    public void and(When<String> when) {
-
-    }
-
-    @Override
-    public <Then> Then and(ThenAssertion<Then, String> thenAssertion) {
-        return null;
-    }
-
-    @Override
-    public void and(ThenVerification<String> thenVerification) {
-
+    @After
+    public void tearDown(){
+        TestTodoServer.stop();
     }
 }
